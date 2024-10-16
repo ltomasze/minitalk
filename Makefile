@@ -6,7 +6,7 @@
 #    By: ltomasze <ltomasze@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/16 13:37:47 by ltomasze          #+#    #+#              #
-#    Updated: 2024/10/16 14:38:30 by ltomasze         ###   ########.fr        #
+#    Updated: 2024/10/16 16:33:52 by ltomasze         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,11 +21,11 @@ LIBFT = libft/libft.a
 
 all: $(SERVER) $(CLIENT)
 
-$(SERVER): $(OBJECTS) $(FT_PRINTF) $(LIBFT)
-	$(CC) $(CFLAGS) -o $(SERVER) $(OBJECTS) $(FT_PRINTF) $(LIBFT)
+$(SERVER): server.o $(FT_PRINTF) $(LIBFT)
+	$(CC) $(CFLAGS) -o $(SERVER) server.o $(FT_PRINTF) $(LIBFT)
 	
-$(CLIENT): $(OBJECTS) $(FT_PRINTF) $(LIBFT)
-	$(CC) $(CFLAGS) -o $(CLIENT) $(OBJECTS) $(FT_PRINTF) $(LIBFT)
+$(CLIENT): client.o $(FT_PRINTF) $(LIBFT)
+	$(CC) $(CFLAGS) -o $(CLIENT) client.o $(FT_PRINTF) $(LIBFT)
 
 $(FT_PRINTF):
 	$(MAKE) -C ft_printf
@@ -42,9 +42,8 @@ clean:
 	$(MAKE) -C libft clean
 
 fclean: clean
-	rm -f $(SERVER) $(CLIENT)
-	$(MAKE) -C ft_printf fclean
-	$(MAKE) -C libft fclean
+	rm -f $(CLIENT)
+	rm -f $(SERVER)
 
 re: fclean all
 
