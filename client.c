@@ -6,7 +6,7 @@
 /*   By: ltomasze <ltomasze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 14:18:33 by ltomasze          #+#    #+#             */
-/*   Updated: 2024/10/20 13:18:40 by ltomasze         ###   ########.fr       */
+/*   Updated: 2024/10/20 13:53:51 by ltomasze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	send_char(int pid, char c)
 		{
 			if (kill(pid, SIGUSR1) == -1)
 			{
-				ft_putstr("Error sending signal.\n");
+				ft_printf("Error sending signal.\n");
 				exit(EXIT_FAILURE);
 			}
 		}
@@ -35,7 +35,7 @@ void	send_char(int pid, char c)
 		{
 			if (kill(pid, SIGUSR2) == -1)
 			{
-				ft_putstr("Error sending signal.\n");
+				ft_printf("Error sending signal.\n");
 				exit(EXIT_FAILURE);
 			}
 		}
@@ -44,10 +44,10 @@ void	send_char(int pid, char c)
 	}
 }
 
-void	handle_confirmation(int signum)
+void	sending_confirmation(int signum)
 {
 	if (signum == SIGUSR1)
-		ft_putstr("Message received by server.\n");
+		ft_printf("Message received by server.\n");
 }
 
 int	main(int argc, char **argv)
@@ -58,12 +58,12 @@ int	main(int argc, char **argv)
 
 	if (argc != 3)
 	{
-		ft_putstr("Usage: ./client [server_pid] [message]\n");
+		ft_printf("Usage: ./client <server_pid> <message>\n");
 		exit(EXIT_FAILURE);
 	}
 	pid = ft_atoi(argv[1]);
 	message = argv[2];
-	signal(SIGUSR1, handle_confirmation);
+	signal(SIGUSR1, sending_confirmation);
 	i = 0;
 	while (message[i])
 	{
