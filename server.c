@@ -6,7 +6,7 @@
 /*   By: ltomasze <ltomasze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:02:19 by ltomasze          #+#    #+#             */
-/*   Updated: 2024/10/16 17:51:06 by ltomasze         ###   ########.fr       */
+/*   Updated: 2024/10/20 13:17:18 by ltomasze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "ft_printf/ft_printf.h"
 #include "libft/libft.h"
 
-void	handle_signal(int signum, siginfo_t *info, void *context)
+void	signal_handling(int signum, siginfo_t *info, void *context)
 {
 	static int		bits = 0;
 	static char		character = 0;
@@ -29,7 +29,7 @@ void	handle_signal(int signum, siginfo_t *info, void *context)
 	{
 		if (character == '\0')
 			kill(info->si_pid, SIGUSR1);
-		write(1, &character, 1);
+		ft_printf("%c", character);
 		bits = 0;
 		character = 0;
 	}
@@ -39,20 +39,18 @@ int	main(void)
 {
 	struct sigaction	sa;
 
-	ft_putstr("Server PID: ");
-	ft_putnbr(getpid());
-	ft_putstr("\n");
-	sa.sa_sigaction = handle_signal;
+	ft_printf("Server PID: %d\n", getpid());
+	sa.sa_sigaction = signal_handling;
 	sa.sa_flags = SA_SIGINFO;
 	sigemptyset(&sa.sa_mask);
 	if (sigaction(SIGUSR1, &sa, NULL) == -1)
 	{
-		ft_putstr("Error setting up signal handlers.\n");
+		ft_printf("Signal handling error\n");
 		return (EXIT_FAILURE);
 	}
 	if (sigaction(SIGUSR2, &sa, NULL) == -1)
 	{
-		ft_putstr("Error setting up signal handlers.\n");
+		ft_printf("Signal handling error\n");
 		return (EXIT_FAILURE);
 	}
 	while (1)
